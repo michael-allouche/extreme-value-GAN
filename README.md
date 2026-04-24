@@ -105,11 +105,13 @@ A standard GAN with:
 - **Generator**: Neural Network with ReLU activations mapping $G_\theta: Z \sim U([0,1]^{d_z}) \mapsto  X\in\mathbb{R}^d$
 - **Discriminator**: Neural Network with ReLU activations mapping $D_\phi: X\in\mathbb R^d \mapsto [0,1]$
 - **Loss**: Binary cross-entropy (BCE)
+
   - Discriminator: 
 ```math 
 \mathcal{L}_D = -\mathbb{E}[\log D_\phi(X)] - \mathbb{E}[\log(1-D_\phi(G_\theta(Z)))]
 ```
-    - Generator: 
+- 
+  - Generator: 
 ```math 
 \mathcal{L}_G = -\mathbb{E}[\log D_\phi(G_\theta(Z))]
 ```
