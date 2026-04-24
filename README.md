@@ -33,11 +33,11 @@ observations $(\mathbf X_1,\dots,\mathbf X_n)$, the problem is to find a functio
 >  **Theorem** (Kuratowski, Villani 2009, page 9).
 > Let $(\mathcal{Z}, \mu_Z)$ and $(\mathcal{X}, \mu_X)$ be two Polish probability
 > spaces. Then there exists a (non-unique) measurable bijection $G$ such that
-> equation (1) holds.
+> the equality holds.
 
 This theorem guarantees the existence of a valid generator for **any** choice of latent
 space and target distribution, as long as both are Polish. In practice, $p_Z$ is
-chosen as a simple distribution (e.g. $U({[0,1]}^{d_Z})$).
+chosen as a simple distribution (e.g. $U({[0,1]}^{d_{Z}})$).
 
 > ⚠️ How to build an approximation of $G$? Consider a Neural Network parametrization $(G_\theta)_\theta$.
 
@@ -48,7 +48,7 @@ chosen as a simple distribution (e.g. $U({[0,1]}^{d_Z})$).
 
 
 ## Extremes
-Focusing on (one-dimensional) heavy-tailed distributions ($F\in {\rm{MDA}}$ (Fr\'echet)}), 
+Focusing on (one-dimensional) heavy-tailed distributions ($F\in {\rm{MDA}}$ (Fréchet)}), 
 the tail quantile function $U(t):=q(1-1/t), \forall t >1$, 
 is **regularly varying** with tail index $\gamma>0$ ($U\in{\mathcal{RV}}_{\gamma}$) 
 and $U(t) = t^\gamma L(t)$ with $L\in{\mathcal{RV}}_0$ called a **slowly varying function**, *i.e.*
@@ -58,7 +58,7 @@ L(\lambda t)/L(t)\to1 \text{ as }{ t\to\infty, \forall \lambda>0.}
 ![burr.png](imgs/burr_quantile_rho-1.png)
 Quantile function of a Burr distribution $u\mapsto q(u)$ with parameters $\gamma=\{0.5, 1, 2\}$ and $\rho=-1$.
 > ⚠️ Challenges
-> - The Universal Approximation Theorem ([Pinkus, 1999](https://pinkus.net.technion.ac.il/files/2021/02/acta.pdf)) doesn't guarentee good guarentee accuracy in the tail if .
+> - The Universal Approximation Theorem ([Pinkus, 1999](https://pinkus.net.technion.ac.il/files/2021/02/acta.pdf)) doesn't guarentee good guarentee accuracy in the tail.
 > -  If $Z$ is either bounded or a Gaussian vector, by no means $G_\theta(\mathbf Z)\overset{\rm d}{=} X.$
 
 ## Problem Statement
@@ -75,10 +75,9 @@ The **upper quadrant region** at level $\delta_n$
 is defined as
 
 ```math
-\mathcal{Q}(\delta_n) = \left\{x \in \mathbb{R}^D : x^{(m)} > F_{X^{(m)}}^{-1}(1-\delta_n^{(m)}), \; m = 1,\ldots,D\right\}.
+\mathcal{Q}(\delta_n) = \left\{x \in \mathbb{R}^D : x^{(m)} > F_{X^{(m)}}^{-1}(1-\delta_n^{(m)}), \; m = 1,\ldots,d\right\}.
 ````
-The figure below illustrates this on a bivariate dataset (log-log scale). The full dataset
-is shown in blue. The two dashed rectangles delimit the upper quadrant regions at two
+The figure below illustrates (log-log scale) a bivariate dataset where the two dashed rectangles delimit the upper quadrant regions at two
 different threshold levels: the **green** lines correspond to $\delta_n = (0.1, 0.1)^\top$
 (moderate extreme region) and the **red** lines correspond to $\delta_n = (0.05, 0.05)^\top$
 (deeper extreme region).
@@ -100,8 +99,8 @@ different threshold levels: the **green** lines correspond to $\delta_n = (0.1, 
 ![GAN.png](imgs/GAN.png)
 A standard GAN with:
 
-- **Generator**: Deep Neural Network with ReLU activations mapping $G_\theta: Z \sim U([0,1]^{d_z}) \mapsto  X\in\mathbb{R}^d$
-- **Discriminator**: Deep Neural Network with ReLU activations mapping $D_\phi: X\in\mathbb R^d \mapsto [0,1]$
+- **Generator**: Neural Network with ReLU activations mapping $G_\theta: Z \sim U([0,1]^{d_z}) \mapsto  X\in\mathbb{R}^d$
+- **Discriminator**: Neural Network with ReLU activations mapping $D_\phi: X\in\mathbb R^d \mapsto [0,1]$
 - **Loss**: Binary cross-entropy (BCE)
   - Discriminator: $\mathcal{L}_D = -\mathbb{E}[\log D_\phi(X)] - \mathbb{E}[\log(1-D_\phi(G_\theta(Z)))]$
   - Generator: $\mathcal{L}_G = -\mathbb{E}[\log D_\phi(G_\theta(Z))]$
@@ -135,9 +134,9 @@ reduce bias, a **Corrected TIF** (CTIF) subtracts 6 universal correction functio
 $(e_1, \ldots, e_6)$ that encode the second-order behavior:
 
 ```math
-f^{\mathrm{CTIF}}(u) = f^{\mathrm{TIF}}(u) - \sum_{k=1}^{6} \kappa_k \, e_k(u).$$
+f^{\mathrm{CTIF}}(u) = f^{\mathrm{TIF}}(u) - \sum_{k=1}^{6} \kappa_k \, e_k(u).
 ```
-The final **EV-GAN generator** for each margin $m\in\{1,\dots,d\}$ is:
+The final **EV-GAN generator** for each margin $m\in\{1,\dots,d\}$ is defined as:
 
 ```math
 G_\psi^{\mathrm{TIF},(m)}(z) = H_{z^{(m)}}^{-1}\!\left(\sum_{j=1}^{J} a_j^{(m)}\,\sigma\!\left(\sum_{i=1}^{d'} w_j^{(i)} z^{(i)} + b_j\right) + \sum_{k=1}^{6} \kappa_k^{(m)}\,e_k(z^{(m)})\right)
@@ -145,7 +144,7 @@ G_\psi^{\mathrm{TIF},(m)}(z) = H_{z^{(m)}}^{-1}\!\left(\sum_{j=1}^{J} a_j^{(m)}\
 where $H_u^{-1}(x) = \left(\dfrac{1-u^2}{2}\right)^{-x}$ is the **inverse TIF activation**,
 and $\sigma(x)=x_+$ is a ReLU activation function. The latent dimension satisfies $d_z \geq d$.
 
-#### Architecture (Figure 2, EV-GAN — $d_Z = 3$, $D = 2$)
+#### Architecture (Figure 2, EV-GAN — $d_Z = 3$, $d = 2$)
 ![EVGAN.png](imgs/EVGAN.png)
 ---
 
