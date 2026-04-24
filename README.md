@@ -37,7 +37,7 @@ observations $(\mathbf X_1,\dots,\mathbf X_n)$, the problem is to find a functio
 
 This theorem guarantees the existence of a valid generator for **any** choice of latent
 space and target distribution, as long as both are Polish. In practice, $p_Z$ is
-chosen as a simple distribution (e.g. $U\!\left([0,1]^{d_Z}\right)$).
+chosen as a simple distribution (e.g.$U([0,1]^{d_Z})$).
 
 > ⚠️ How to build an approximation of $G$? Consider a Neural Network parametrization $(G_\theta)_\theta$.
 
