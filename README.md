@@ -49,14 +49,14 @@ chosen as a simple distribution (e.g. $U({[0,1]}^{d_{Z}})$).
 
 ## Extremes
 Focusing on (one-dimensional) heavy-tailed distributions ($F\in {\rm{MDA}}$ (Fréchet)}), 
-the tail quantile function $U(t):=q(1-1/t), \forall t >1$, 
-is **regularly varying** with tail index $\gamma>0$ ($U\in{\mathcal{RV}}_{\gamma}$) 
-and $U(t) = t^\gamma L(t)$ with $L\in{\mathcal{RV}}_0$ called a **slowly varying function**, *i.e.*
+the tail quantile function $U_X(t):=q_X(1-1/t), \forall t >1$, 
+is **regularly varying** with tail index $\gamma>0$ ($U_X\in{\mathcal{RV}}_{\gamma}$) 
+and $U_X(t) = t^\gamma L(t)$ with $L\in{\mathcal{RV}}_0$ called a **slowly varying function**, *i.e.*
 ```math
 L(\lambda t)/L(t)\to1 \text{ as }{ t\to\infty, \forall \lambda>0.}
 ```
 ![burr.png](imgs/burr_quantile_rho-1.png)
-Quantile function of a Burr distribution $u\mapsto q(u)$ with parameters $\gamma=\{0.5, 1, 2\}$ and $\rho=-1$.
+Quantile function of a Burr distribution $u\mapsto q_X(u)$ with parameters $\gamma=\{0.5, 1, 2\}$ and $\rho=-1$.
 > ⚠️ Challenges
 > - The Universal Approximation Theorem ([Pinkus, 1999](https://pinkus.net.technion.ac.il/files/2021/02/acta.pdf)) doesn't guarentee good guarentee accuracy in the tail.
 > -  If $Z$ is either bounded or a Gaussian vector, by no means $G_\theta(\mathbf Z)\overset{\rm d}{=} X.$
@@ -102,8 +102,14 @@ A standard GAN with:
 - **Generator**: Neural Network with ReLU activations mapping $G_\theta: Z \sim U([0,1]^{d_z}) \mapsto  X\in\mathbb{R}^d$
 - **Discriminator**: Neural Network with ReLU activations mapping $D_\phi: X\in\mathbb R^d \mapsto [0,1]$
 - **Loss**: Binary cross-entropy (BCE)
-  - Discriminator: $\mathcal{L}_D = -\mathbb{E}[\log D_\phi(X)] - \mathbb{E}[\log(1-D_\phi(G_\theta(Z)))]$
-  - Generator: $\mathcal{L}_G = -\mathbb{E}[\log D_\phi(G_\theta(Z))]$
+  - Discriminator: 
+```math 
+\mathcal{L}_D = -\mathbb{E}[\log D_\phi(X)] - \mathbb{E}[\log(1-D_\phi(G_\theta(Z)))]
+```
+  - Generator: 
+```math 
+\mathcal{L}_G = -\mathbb{E}[\log D_\phi(G_\theta(Z))]
+```
 - **Sampling**: Acceptance-rejection to obtain samples in $\mathcal{Q}(\delta_n)$
 
 A classical GAN with bounded latent input cannot reproduce heavy-tailed margins. The three
@@ -156,15 +162,9 @@ and $\sigma(x)=x_+$ is a ReLU activation function. The latent dimension satisfie
 
 #### Key idea
 
-Simulates directly in $\mathcal{Q}(\delta_n)$ for a threshold $\delta_n$.
-The generator approximates the log-spacing function using **eLU activation functions**
-(instead of ReLU) for higher-order bias correction. The latent input and anchor level are
-log-transformed before entering the network. The output is rescaled by the empirical anchor
-point $X^{(m)}_{n-k+1,n}$.
+Approximate the log-spacing function using **eLU activation functions**
+which are the natural basis functions to represent extreme quantiles.
 
-#### Architecture (Figure 2, ExceedGAN — $d_Z= 3$, $d= 2$)
-
-![ExcessGAN.png](imgs/ExcessGAN.png)
 
 #### 3.1 Fixed-Level ExceedGAN (FL-ExceedGAN)
 
@@ -174,26 +174,24 @@ Based on Lemma 3.1: $Y(\delta_n) \overset{d}{=} F_X^{-1}(1 - \delta_n Z)$ with
 $Z \sim U([0,1])$. The log-spacing function
 
 ```math
-x_1\geq 0, x_2\geq 0 \mapstof(x_1, x_2) = \log U_X(e^{x_1+x_2}) - \log U_X(e^{x_2}) = \gamma x_1 + \varphi(x_1, x_2)
+x_1\geq 0, x_2\geq 0 \mapsto f(x_1, x_2) = \log U_X(e^{x_1+x_2}) - \log U_X(e^{x_2}) = \gamma x_1 + \varphi(x_1, x_2)
 ```
-can be approximated by a NN with $J(J-1)$ **eLU** neurons:
+is represented by two terms: 1) the extrapolation factor which depends on the tail index $\gamma$ and the 
+function $\varphi(\cdot,\cdot)$ that contains the bias in the extreme quantile estimators. 
+The main result in [Allouche, Girard & Gobet, Statistics and Computing 2023](https://link.springer.com/article/10.1007/s11222-023-10331-2)
+is that $\varphi(\cdot, \cdot)$ can be approximated by a NN with $J(J-1)$ **eLU** neurons:
 
 ```math
-\varphi^{\mathrm{NN}}_J(x_1, x_2;\theta) = \sum_{i=1}^{J(J-1)/2} w_i^{(1)} \left\{\sigma_E\!\left(w_i^{(2)} x_1 + w_i^{(3)} x_2\right) - \sigma_E\!\left(w_i^{(4)} x_2\right)\right\}$$
+\varphi^{\mathrm{NN}}_J(x_1, x_2;\theta) = \sum_{i=1}^{J(J-1)/2} w_i^{(1)} \left\{\sigma_E\!\left(w_i^{(2)} x_1 + w_i^{(3)} x_2\right) - \sigma_E\!\left(w_i^{(4)} x_2\right)\right\}
 ```
 where $\sigma_E(x) = x \cdot \mathbf{1}(x>0) + (e^x-1)\cdot\mathbf{1}(x\leq 0)$ is the
-**eLU activation**, which captures the higher-order bias of the tail. The generator for
+**eLU activation**, making the link between the width of the NN and the higher-order bias correction. The generator for
 each margin $m\in\{1,\dots,d\}$ is:
 ```math
-G^{\mathrm{EX},(m)}(z) = X^{(m)}_{n-k^{(m)}+1,n} \cdot \exp\!\left(\sigma_R\!\left[f^{\mathrm{NN}}_J\!\left(\log(1/z), \log(1/\delta_n)\right)\right]\right)
+G^{\mathrm{EX},(m)}(z) = X^{(m)}_{n-k^{(m)}+1,n} \exp\!\left(\sigma_R\!\left[f^{\mathrm{NN}}_J\!\left(\log(1/z), \log(1/\delta_n)\right)\right]\right)
 ```
-where $$ X^{(m)}_{n-k+1,n} $$ is the empirical anchor point (order statistic) and
-$$ k^{(m)} = \lfloor n\delta_n^{(m)} \rfloor $$.
-
-
-Inputs are **log-transformed**: $-\log(z^{(j)}) = \log(1/z^{(j)})$ and
-$-\log(\delta_n^{(m')}) = \log(1/\delta_n^{(m')})$. This maps the $(0,1)$ latent
-space to $(0, +\infty)$, suitable for approximating the log-spacing function.
+where $X^{(m)}_{n-k+1,n}$ is the empirical anchor point (order statistic) and
+$k^{(m)} = \lfloor n\delta_n^{(m)} \rfloor$.
 
 
 #### 3.2. Level-Varying ExceedGAN (LV-ExceedGAN)
@@ -210,16 +208,19 @@ where $p_U$ is the uniform distribution on $(0, 1-a)^d$.
 
 At simulation time, **any** threshold $\delta_n \in (0, 1-a)^d$ can be provided.
 
+#### Architecture (Figure 2, ExceedGAN — $d_Z= 3$, $d= 2$)
+
+![ExcessGAN.png](imgs/ExcessGAN.png)
 ---
 
 ## Numerical Results
 
 The plots below compare all four models on synthetic data simulated from a **bivariate
-Gumbel copula** (dependence parameter $\mu = 2$, Kendall's $\tau = 0.5$) with
-**Burr margins** (second-order parameters $(\rho_1, \rho_2) = (-1, -3)$),
-across three tail indices $\gamma \in \{0.3, 0.5, 0.9\}$.
+Gumbel copula** (dependence parameter $\mu = 2$,$i.e.$ Kendall's $\tau = 0.5$) with
+**Burr margins** (second-order parameters $(\rho_1, \rho_2)=(-1, -3)$),
+across three tail indices $\gamma\in\{0.3, 0.5, 0.9\}$.
 
-In each panel, **black crosses** represent the ground-truth test exceedances and **colored
+In each panel, **black crosses** represent the simulated test set and **colored
 dots** are generated samples from the corresponding model. Both axes are on a log scale.
 
 ### Moderate region $\delta_n = (0.1, 0.1)^\top$
@@ -262,9 +263,9 @@ pip install numpy scipy statsmodels matplotlib
 **Minimum requirements:**
 
 | Package | Version |
-|---------|---------|
+|---------|--------|
 | Python | ≥ 3.9 |
-| PyTorch | ≥ 1.12 (MPS support) |
+| PyTorch | ≥ 1.12 |
 | NumPy | ≥ 1.22 |
 | SciPy | ≥ 1.8 |
 
@@ -276,13 +277,7 @@ pip install numpy scipy statsmodels matplotlib
 
 ```bash
 # Train a Fixed-Level ExceedGAN on synthetic Gumbel-Burr data
-python main.py --model fl_exceed_gan --n_epochs 10000 --verbose 100
-
-# Train a Level-Varying ExceedGAN
-python main.py --model lv_exceed_gan --n_epochs 10000 --batch_size 32
-
-# Run the baseline GAN
-python main.py --model gan --n_epochs 1000
+python main.py --model fl_exceed_gan --n_epochs 10000 --batch_size 32 --verbose 100
 ```
 
 ### Available arguments
@@ -297,25 +292,24 @@ python main.py --model gan --n_epochs 1000
 
 ### Model parameters for the NNs (in main.py)
 ```
-    LATENT_DIM    = 10  # Latent Dimension of the Generator
-    HIDDEN_DIM_G  = [30]  # Number of neurons per layer in the Generator
-    HIDDEN_DIM_D  = [10, 10]  # Number of neurons per layer in the Discriminator
-    LR_D          = 1e-4  # Learning rate Discriminator
-    LR_G          = 1e-4  # Learning rate Generator
-    NORMALIZATION = False  # If Max Normalization is applied on the data
-
+LATENT_DIM    = 10  # Latent Dimension of the Generator
+HIDDEN_DIM_G  = [30]  # Number of neurons per layer in the Generator
+HIDDEN_DIM_D  = [10, 10]  # Number of neurons per layer in the Discriminator
+LR_D          = 1e-4  # Learning rate Discriminator
+LR_G          = 1e-4  # Learning rate Generator
+NORMALIZATION = False  # Max Normalization is applied on the data
 ```
 
 ### Data parameters in the Gumbel Copula (in main.py)
 ```
-    N_DATA        = 100000  # Data Sample size
-    DIM_DATA      = 2  # Data Dimension
-    ANCHOR_LEVELS = [0.05] * DIM_DATA  # Anchor levels delta_n for each margins
-    # Burr parameters
-    GAMMA = 0.5
-    RHO = -1
-    # Gumbel copula parameter
-    THETA = 2
+N_DATA        = 100000  # Data Sample size
+DIM_DATA      = 2  # Data Dimension
+ANCHOR_LEVELS = [0.05] * DIM_DATA  # Anchor levels delta_n for each margins
+# Burr parameters
+GAMMA = 0.5
+RHO = -1
+# Gumbel copula parameter
+THETA = 2
 ```
 
 ### Python example (in main.py)

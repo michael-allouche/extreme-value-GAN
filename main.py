@@ -83,17 +83,19 @@ if __name__ == "__main__":
     args = parse_args()
     set_seed(args.seed)
 
-    # --- Hyperparameters ---
-    N_DATA        = 100000  # Data Sample size
-    DIM_DATA      = 2  # Data Dimension
-    ANCHOR_LEVELS = [0.05] * DIM_DATA  # Anchor levels delta_n for each margins
-    NORMALIZATION = False  # If Max Normalization is applied on the data
+    # --- Model Hyperparameters ---
     LATENT_DIM    = 10  # Latent Dimension of the Generator
     HIDDEN_DIM_G  = [30]  # Number of neurons per layer in the Generator
     HIDDEN_DIM_D  = [10, 10]  # Number of neurons per layer in the Discriminator
     LR_D          = 1e-4  # Learning rate Discriminator
     LR_G          = 1e-4  # Learning rate Generator
+    NORMALIZATION = False  # If Max Normalization is applied on the data
 
+
+    # --- Data Hyperparameters ---
+    N_DATA        = 100000  # Data Sample size
+    DIM_DATA      = 2  # Data Dimension
+    ANCHOR_LEVELS = [0.05] * DIM_DATA  # Anchor levels delta_n for each margins
     # Burr parameters
     GAMMA = 0.5
     RHO = -1
