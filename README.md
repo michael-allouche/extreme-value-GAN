@@ -9,6 +9,9 @@ with ReLU neural networks** — [Allouche, Girard & Gobet, JMLR 2022](https://ww
 - **ExceedGAN: Simulation above extreme thresholds using
 Generative Adversarial Networks** — [Allouche, Girard & Gobet, Extremes 2026](https://inria.hal.science/hal-05044516v3/document)
 
+The models are also used in the **[Handbook of Statistics of Extremes, Chapter 20](https://extremestats.github.io/Handbook/)**
+(de Carvalho, Huser, Naveau & Reich, Chapman & Hall/CRC, 2026).
+
 Four generative models are implemented:
 
 | Model                   | Key `--model` | Paper |
@@ -37,7 +40,7 @@ observations $(\mathbf X_1,\dots,\mathbf X_n)$, the problem is to find a functio
 
 This theorem guarantees the existence of a valid generator for **any** choice of latent
 space and target distribution, as long as both are Polish. In practice, $p_Z$ is
-chosen as a simple distribution (e.g.$U([0,1]^{d_Z})$).
+chosen as a simple distribution (e.g. Uniform or Gaussian).
 
 > ⚠️ How to build an approximation of $G$? Consider a Neural Network parametrization $(G_\theta)_\theta$.
 
@@ -397,6 +400,15 @@ plot_results(trainset, trainset_excess, X_sim_np, args.model, margin_i=0, margin
   year    = {2026},
   doi     = {10.1007/s10687-026-00528-9},
   note    = {HAL: hal-05044516}
+}
+
+@book{HandbookExtremes2026,
+  author    = {{de Carvalho}, M. and Huser, R. and Naveau, P. and Reich, B. J.},
+  year      = {2026},
+  title     = {Handbook of Statistics of Extremes},
+  publisher = {Chapman \& Hall/CRC},
+  address   = {Boca Raton, FL},
+  url       = {https://extremestats.github.io/Handbook/}
 }
 ```
 
