@@ -24,7 +24,7 @@ If $\mathbf X$ denotes the r.v. taking values in some space $\mathcal X\subseteq
 observations $(\mathbf X_1,\dots,\mathbf X_n)$, the problem is to find a function $G:\mathcal Z\to \mathcal X$ and a 
 **latent probability distribution** $p_Z$ on $\mathcal Z\subseteq\mathbb R^{d_Z}$ such that
 ```math
-    \mathbf X \overset{\rm d}{=} G(\mathbf Z) \text{ and } \mathbf Z\sim p_Z \text{\tag{1}}.
+    \mathbf X \overset{\rm d}{=} G(\mathbf Z) \text{ and } \mathbf Z\sim p_Z.
 ```
 
 > ⚠️ Which class of functions $G$ and densities $p_Z$ may be considered to ensure
