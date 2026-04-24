@@ -25,7 +25,7 @@ observations $\mathbf X_1,\dots,\mathbf X_n)$, the problem is to find a function
 **latent probability distribution** $p_Z$ on $\mathcal Z\subseteq\mathbb R^{d_Z}$} such that
     ```math
         \mathbf X \overset{\rm d}{=} G(\mathbf Z) \text{ and } \mathbf Z\sim p_Z \tag{1}.
-    ````
+    ```
 
 > ⚠️ Which class of functions $G$ and densities $p_Z$ may be considered to ensure
 > that equation (1) holds?
