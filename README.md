@@ -37,7 +37,7 @@ observations $(\mathbf X_1,\dots,\mathbf X_n)$, the problem is to find a functio
 
 This theorem guarantees the existence of a valid generator for **any** choice of latent
 space and target distribution, as long as both are Polish. In practice, $p_Z$ is
-chosen as a simple distribution (e.g. $U({[0,1]}^{d_{Z}})$).
+chosen as a simple distribution (e.g. $U\!\left([0,1]^{d_Z}\right)$).
 
 > ⚠️ How to build an approximation of $G$? Consider a Neural Network parametrization $(G_\theta)_\theta$.
 
@@ -48,7 +48,7 @@ chosen as a simple distribution (e.g. $U({[0,1]}^{d_{Z}})$).
 
 
 ## Extremes
-Focusing on (one-dimensional) heavy-tailed distributions ($F\in {\rm{MDA}}$ (Fréchet)}), 
+Focusing on (one-dimensional) heavy-tailed distributions ($F\in {\rm{MDA}}$ (Fréchet)), 
 the tail quantile function $U_X(t):=q_X(1-1/t), \forall t >1$, 
 is **regularly varying** with tail index $\gamma>0$ ($U_X\in{\mathcal{RV}}_{\gamma}$) 
 and $U_X(t) = t^\gamma L(t)$ with $L\in{\mathcal{RV}}_0$ called a **slowly varying function**, *i.e.*
@@ -56,9 +56,9 @@ and $U_X(t) = t^\gamma L(t)$ with $L\in{\mathcal{RV}}_0$ called a **slowly varyi
 L(\lambda t)/L(t)\to1 \text{ as }{ t\to\infty, \forall \lambda>0.}
 ```
 ![burr.png](imgs/burr_quantile_rho-1.png)
-Quantile function of a Burr distribution $u\mapsto q_X(u)$ with parameters $\gamma=\{0.5, 1, 2\}$ and $\rho=-1$.
+Quantile function of a Burr distribution $u\mapsto q_X(u)$ with parameters $\gamma\in\{0.5, 1, 2\}$ and $\rho=-1$.
 > ⚠️ Challenges
-> - The Universal Approximation Theorem ([Pinkus, 1999](https://pinkus.net.technion.ac.il/files/2021/02/acta.pdf)) doesn't guarentee good guarentee accuracy in the tail.
+> - The Universal Approximation Theorem ([Pinkus, 1999](https://pinkus.net.technion.ac.il/files/2021/02/acta.pdf)) doesn't guarentee good accuracy in the tail.
 > -  If $Z$ is either bounded or a Gaussian vector, by no means $G_\theta(\mathbf Z)\overset{\rm d}{=} X.$
 
 ## Problem Statement
@@ -162,8 +162,8 @@ and $\sigma(x)=x_+$ is a ReLU activation function. The latent dimension satisfie
 
 #### Key idea
 
-Approximate the log-spacing function using **eLU activation functions**
-which are the natural basis functions to represent extreme quantiles.
+Sample multivariate data exceeding large thresholds using the approximation of the log-spacing function using **eLU activation functions**,
+which are the natural basis functions to represent extreme quantiles. 
 
 
 #### 3.1 Fixed-Level ExceedGAN (FL-ExceedGAN)
@@ -176,7 +176,7 @@ $Z \sim U([0,1])$. The log-spacing function
 ```math
 x_1\geq 0, x_2\geq 0 \mapsto f(x_1, x_2) = \log U_X(e^{x_1+x_2}) - \log U_X(e^{x_2}) = \gamma x_1 + \varphi(x_1, x_2)
 ```
-is represented by two terms: 1) the extrapolation factor which depends on the tail index $\gamma$ and the 
+is represented by two terms: 1) the extrapolation factor which depends on the tail index $\gamma$ and 2) the 
 function $\varphi(\cdot,\cdot)$ that contains the bias in the extreme quantile estimators. 
 The main result in [Allouche, Girard & Gobet, Statistics and Computing 2023](https://link.springer.com/article/10.1007/s11222-023-10331-2)
 is that $\varphi(\cdot, \cdot)$ can be approximated by a NN with $J(J-1)$ **eLU** neurons:
@@ -216,7 +216,7 @@ At simulation time, **any** threshold $\delta_n \in (0, 1-a)^d$ can be provided.
 ## Numerical Results
 
 The plots below compare all four models on synthetic data simulated from a **bivariate
-Gumbel copula** (dependence parameter $\mu = 2$,$i.e.$ Kendall's $\tau = 0.5$) with
+Gumbel copula** (dependence parameter $\mu = 2$,*i.e.* Kendall's $\tau = 0.5$) with
 **Burr margins** (second-order parameters $(\rho_1, \rho_2)=(-1, -3)$),
 across three tail indices $\gamma\in\{0.3, 0.5, 0.9\}$.
 
@@ -356,6 +356,12 @@ plot_results(trainset, trainset_excess, X_sim_np, args.model, margin_i=0, margin
 │   ├── GAN.png                  # GAN architecture diagram
 │   ├── EVGAN.png                # EV-GAN architecture diagram
 │   └── ExcessGAN.png            # ExceedGAN architecture diagram
+│   ├── data.jpg
+│   ├── neural_networks.png
+│   ├── burr_quantile_rho-1.png
+│   ├── burr_tif_rho_fixed.png
+│   ├── simulations_01.png
+│   └── simulations_005.png
 ├── models/
 │   ├── __init__.py              # Model registry (dict_models)
 │   ├── utils.py                 # Shared blocks (BlockReLU, BlockELU) and get_data_uqr
