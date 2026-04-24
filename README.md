@@ -106,7 +106,7 @@ A standard GAN with:
 ```math 
 \mathcal{L}_D = -\mathbb{E}[\log D_\phi(X)] - \mathbb{E}[\log(1-D_\phi(G_\theta(Z)))]
 ```
-  - Generator: 
+    - Generator: 
 ```math 
 \mathcal{L}_G = -\mathbb{E}[\log D_\phi(G_\theta(Z))]
 ```
@@ -217,7 +217,7 @@ At simulation time, **any** threshold $\delta_n \in (0, 1-a)^d$ can be provided.
 
 The plots below compare all four models on synthetic data simulated from a **bivariate
 Gumbel copula** (dependence parameter $\mu = 2$,*i.e.* Kendall's $\tau = 0.5$) with
-**Burr margins** (second-order parameters $(\rho_1, \rho_2)=(-1, -3)$),
+**Burr margins** (second-order parameters $(\rho_1,\rho_2)=(-1,-3))$,
 across three tail indices $\gamma\in\{0.3, 0.5, 0.9\}$.
 
 In each panel, **black crosses** represent the simulated test set and **colored
