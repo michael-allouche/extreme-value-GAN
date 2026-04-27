@@ -23,9 +23,9 @@ Four generative models are implemented:
 
 ---
 ## Generative Modeling
-If $\mathbf{X}$ denotes the r.v. taking values in some space $\mathcal{X} \subseteq \mathbb{R}^d$ from which we have 
-observations $(\mathbf{X_1},\dots,\mathbf{X_n})$, the problem is to find a function $G:\mathcal Z\to \mathcal X$ and a 
-**latent probability distribution** $p_Z$ on $\mathcal Z\subseteq\mathbb R^{d_Z}$ such that
+If $\mathbf{X}$ denotes the r.v. taking values in some space $𝒳 \subseteq \mathbb{R}^d$ from which we have 
+observations $(\mathbf{X_1},\dots,\mathbf{X_n})$, the problem is to find a function $G:𝒵\to 𝒳$ and a 
+**latent probability distribution** $p_Z$ on $𝒵\subseteq\mathbb R^{d_Z}$ such that
 ```math
     \mathbf X \overset{\rm d}{=} G(\mathbf Z) \text{ and } \mathbf Z\sim p_Z.
 ```
@@ -34,7 +34,7 @@ observations $(\mathbf{X_1},\dots,\mathbf{X_n})$, the problem is to find a funct
 > that the equality above holds?
 
 >  **Theorem** (Kuratowski, Villani 2009, page 9).
-> Let $(\mathcal{Z}, \mu_Z)$ and $(\mathcal{X}, \mu_X)$ be two Polish probability
+> Let $(𝒵, \mu_Z)$ and $(𝒳, \mu_X)$ be two Polish probability
 > spaces. Then there exists a (non-unique) measurable bijection $G$ such that
 > the equality holds.
 
@@ -53,8 +53,8 @@ chosen as a simple distribution (e.g. Uniform or Gaussian).
 ## Extremes
 Focusing on (one-dimensional) heavy-tailed distributions ($F\in {\rm{MDA}}$ (Fréchet)), 
 the tail quantile function $U_X(t):=q_X(1-1/t), \forall t >1$, 
-is **regularly varying** with tail index $\gamma>0$ ($U_X\in{\mathcal{RV}}_{\gamma}$) 
-and $U_X(t) = t^\gamma L(t)$ with $L\in{\mathcal{RV}}_0$ called a **slowly varying function**, *i.e.*
+is **regularly varying** with tail index $\gamma>0$ ($U_X\in\text{ℛ𝒱}_{\gamma}$) 
+and $U_X(t) = t^\gamma L(t)$ with $L\in\text{ℛ𝒱}_0$ called a **slowly varying function**, *i.e.*
 ```math
 L(\lambda t)/L(t)\to1 \text{ as }{ t\to\infty, \forall \lambda>0.}
 ```
@@ -78,7 +78,7 @@ The **upper quadrant region** at level $\delta_n$
 is defined as
 
 ```math
-\mathcal{Q}(\delta_n) = \left\{x \in \mathbb{R}^D : x^{(m)} > F_{X^{(m)}}^{-1}(1-\delta_n^{(m)}), \; m = 1,\ldots,d\right\}.
+𝒬(\delta_n) = \left\{x \in \mathbb{R}^D : x^{(m)} > F_{X^{(m)}}^{-1}(1-\delta_n^{(m)}), \; m = 1,\ldots,d\right\}.
 ````
 The figure below illustrates (log-log scale) a bivariate dataset where the two dashed rectangles delimit the upper quadrant regions at two
 different threshold levels: the **green** lines correspond to $\delta_n = (0.1, 0.1)^\top$
@@ -115,7 +115,7 @@ A standard GAN with:
 ```math 
 \mathcal{L}_G = -\mathbb{E}[\log D_\phi(G_\theta(Z))]
 ```
-- **Sampling**: Acceptance-rejection to obtain samples in $\mathcal{Q}(\delta_n)$
+- **Sampling**: Acceptance-rejection to obtain samples in $𝒬(\delta_n)$
 
 A classical GAN with bounded latent input cannot reproduce heavy-tailed margins. The three
 models below address this by adapting the generator parametrization to the extreme-value
