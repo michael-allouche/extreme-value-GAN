@@ -9,7 +9,7 @@ with ReLU neural networks** — [Allouche, Girard & Gobet, JMLR 2022](https://ww
 - **ExceedGAN: Simulation above extreme thresholds using
 Generative Adversarial Networks** — [Allouche, Girard & Gobet, Extremes 2026](https://inria.hal.science/hal-05044516v3/document)
 
-The code is also used in the **[Handbook of Statistics of Extremes, Chapter 20](https://extremestats.github.io/Handbook/)**
+The code is also part of the **[Handbook of Statistics of Extremes, Chapter 20](https://extremestats.github.io/Handbook/)**
 (de Carvalho, Huser, Naveau & Reich, Chapman & Hall/CRC, 2026).
 
 Four generative models are implemented:
