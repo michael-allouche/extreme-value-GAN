@@ -23,8 +23,8 @@ Four generative models are implemented:
 
 ---
 ## Generative Modeling
-If $\mathbf X$ denotes the r.v. taking values in some space $\mathcal X\subseteq\mathbb R^d$ from which we have 
-observations $(\mathbf X_1,\dots,\mathbf X_n)$, the problem is to find a function $G:\mathcal Z\to \mathcal X$ and a 
+If $\mathbf{X}$ denotes the r.v. taking values in some space $\mathcal{X}\subseteq\mathbb R^d$ from which we have 
+observations $(\mathbf{X_1},\dots,\mathbf{X_n})$, the problem is to find a function $G:\mathcal Z\to \mathcal X$ and a 
 **latent probability distribution** $p_Z$ on $\mathcal Z\subseteq\mathbb R^{d_Z}$ such that
 ```math
     \mathbf X \overset{\rm d}{=} G(\mathbf Z) \text{ and } \mathbf Z\sim p_Z.
