@@ -68,10 +68,10 @@ Quantile function of a Burr distribution $u\mapsto q_X(u)$ with parameters $\gam
 
 Let $X = (X^{(1)}, \ldots, X^{(d)})$ be a $d$-dimensional random vector with
 heavy-tailed marginals. The **exceedance distribution** above a componentwise threshold
-$u_n = F_X^{-1}(1 - \delta_n)$ is the conditional distribution
+$u^{(m)}_n = F_{X^{(m)}}^{-1}(1 - \delta_n)$ for $m\in\{1,\dots,d\}$ is the conditional distribution
 
 ```math
-Y(\delta_n) = X \Big| X > u_n
+Y^{(m)}(\delta_n) \overset{d}{=} X^{(m)} \Big| X^{(m)} > u^{(m)}_n.
 ```
 
 The **upper quadrant region** at level $\delta_n$
