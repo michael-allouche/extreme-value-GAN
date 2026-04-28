@@ -81,7 +81,7 @@ The **upper quadrant region** at level $\delta_n$
 is defined as
 
 ```math
-𝒬(\delta_n) = \left\{x \in \mathbb{R}^D : x^{(m)} > F_{X^{(m)}}^{-1}(1-\delta_n^{(m)}), \; m = 1,\ldots,d\right\}.
+𝒬(\delta_n) = \left\{x \in ℝ^d : x^{(m)} > F_{X^{(m)}}^{-1}(1-\delta_n^{(m)}), \; m = 1,\ldots,d\right\}.
 ````
 The figure below illustrates (log-log scale) a bivariate dataset where the two dashed rectangles delimit the upper quadrant regions at two
 different threshold levels: the **green** lines correspond to $\delta_n = (0.1, 0.1)^\top$
@@ -105,18 +105,18 @@ different threshold levels: the **green** lines correspond to $\delta_n = (0.1, 
 ![GAN.png](imgs/GAN.png)
 A standard GAN with:
 
-- **Generator**: Neural Network with ReLU activations mapping $G_\theta: Z \sim U([0,1]^{d_z}) \mapsto  X\in\mathbb{R}^d$
-- **Discriminator**: Neural Network with ReLU activations mapping $D_\phi: X\in\mathbb R^d \mapsto [0,1]$
+- **Generator**: Neural Network with ReLU activations mapping $G_\theta: Z \sim U([0,1]^{d_z}) \mapsto  X\in ℝ^d$
+- **Discriminator**: Neural Network with ReLU activations mapping $D_\phi: X\in ℝ^d \mapsto [0,1]$
 - **Loss**: Binary cross-entropy (BCE)
 
   - Discriminator: 
 ```math 
-\mathcal{L}_D = -\mathbb{E}[\log D_\phi(X)] - \mathbb{E}[\log(1-D_\phi(G_\theta(Z)))]
+\mathcal{L}_D = - 𝔼[\log D_\phi(X)] - 𝔼[\log(1-D_\phi(G_\theta(Z)))]
 ```
 - 
   - Generator: 
 ```math 
-\mathcal{L}_G = -\mathbb{E}[\log D_\phi(G_\theta(Z))]
+\mathcal{L}_G = - 𝔼[\log D_\phi(G_\theta(Z))]
 ```
 - **Sampling**: Acceptance-rejection to obtain samples in $𝒬(\delta_n)$
 
@@ -210,7 +210,7 @@ $(0, 1-a)^d$ at each training step (with $a \in (0,1)$ chosen by the user).
 
 The training uses a conditional GAN objective:
 ```math
-\arg\min_\theta \max_\varphi \left(\mathbb{E}_{p_U}\!\left[\mathbb{E}_{p_{Y(u_n)}}\!\left[\log D^\mathrm{EX}_\varphi(Y, \delta_n)\right]\right] + \mathbb{E}_{p_U}\!\left[\mathbb{E}_{p_Z}\!\left[\log\left(1 - D^\mathrm{EX}_\varphi\!\left(G^\mathrm{EX}_\theta(Z,\delta_n),\delta_n\right)\right)\right]\right]\right)
+\arg\min_\theta \max_\varphi \left(𝔼_{p_U}\!\left[𝔼_{p_{Y(u_n)}}\!\left[\log D^\mathrm{EX}_\varphi(Y, \delta_n)\right]\right] + 𝔼_{p_U}\!\left[𝔼_{p_Z}\!\left[\log\left(1 - D^\mathrm{EX}_\varphi\!\left(G^\mathrm{EX}_\theta(Z,\delta_n),\delta_n\right)\right)\right]\right]\right)
 ```
 where $p_U$ is the uniform distribution on $(0, 1-a)^d$.
 
