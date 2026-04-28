@@ -68,7 +68,10 @@ Quantile function of a Burr distribution $u\mapsto q_X(u)$ with parameters $\gam
 
 Let $X = (X^{(1)}, \ldots, X^{(d)})$ be a $d$-dimensional random vector with
 heavy-tailed marginals. The **exceedance distribution** above a componentwise threshold
-$u^{(m)}_n = F_{X^{(m)}}^{-1}(1 - \delta_n)$ for $m\in\{1,\dots,d\}$ is the conditional distribution
+```math
+u^{(m)}_n = F_{X^{(m)}}^{-1}(1 - \delta_n)
+```
+for $m\in\{1,\dots,d\}$ is the conditional distribution
 
 ```math
 Y^{(m)}(\delta_n) \overset{d}{=} X^{(m)} \Big| X^{(m)} > u^{(m)}_n.
@@ -305,7 +308,7 @@ LR_G          = 1e-4  # Learning rate Generator
 NORMALIZATION = False  # Max Normalization is applied on the data
 ```
 
-### Data parameters in the Gumbel Copula (in main.py)
+### Data parameters for the Gumbel Copula (in main.py)
 ```
 N_DATA        = 100000  # Data Sample size
 DIM_DATA      = 2  # Data Dimension
